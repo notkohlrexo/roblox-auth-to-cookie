@@ -1,5 +1,5 @@
 # Roblox, Authentication Ticket to Cookie
-  Just a "new" way to convert your authentication ticket to a cookie.
+  Just a "new" way to convert your authentication ticket to a cookie.<br>
   Releasing it because people are selling that (which is or was public).
 
 
