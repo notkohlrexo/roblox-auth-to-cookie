@@ -1,10 +1,10 @@
 # Roblox, Authentication Ticket to Cookie
-  Just a "new" way to convert your authentication ticket to a cookie.
+  Just a "new" way to convert your authentication ticket to a cookie.<br>
   Releasing it because people are selling that (which is or was public).
 
 
 # Credits
-  H0nda released a way to spoof a IP address of your wish on roblox endpoints.
+  H0nda released a way to spoof a IP address of your wish on roblox endpoints.<br>
   I've rewritten it in node.js & slightly modified it in python.
 
 
