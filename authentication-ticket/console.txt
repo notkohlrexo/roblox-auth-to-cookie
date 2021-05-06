@@ -1,0 +1,16 @@
+try {
+    var t = (await (await fetch("https://www.roblox.com/home", {
+        credentials: "include"
+    })).text()).split("<meta name=csrf-token data-token=")[1].split(">")[0]
+} catch {
+    t = (await (await fetch("https://web.roblox.com/home", {
+        credentials: "include"
+    })).text()).split("<meta name=csrf-token data-token=")[1].split(">")[0]
+};
+
+var ticket = (await fetch("https://auth.roblox.com/v1/authentication-ticket", {
+    method: "POST",
+    credentials: "include",
+    headers: {"x-csrf-token": t}
+})).headers.get("rbx-authentication-ticket")
+console.log(ticket)
