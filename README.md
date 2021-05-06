@@ -6,6 +6,8 @@
 # Credits
   H0nda released a way to spoof a IP address of your wish on roblox endpoints.<br>
   I've rewritten it in node.js & slightly modified it in python.
+  
+  Cyph#5099 for the php version & fix.
 
 
 
