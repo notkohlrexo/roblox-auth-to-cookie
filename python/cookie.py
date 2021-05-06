@@ -1,3 +1,8 @@
+#Not working anymore, fix it yourself
+#Not working anymore, fix it yourself
+#Not working anymore, fix it yourself
+#Not working anymore, fix it yourself
+
 from http.client import HTTPResponse
 from urllib.parse import urlsplit, unquote, quote
 import socket

